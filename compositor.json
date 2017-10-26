@@ -1,0 +1,88 @@
+{
+  "name": "bueroalerta/connected-react-router",
+  "version": "0.1.4",
+  "libraries": {
+    "xv": "^1.1.25"
+  },
+  "title": "0004",
+  "branch": "",
+  "style": {
+    "name": "Swiss",
+    "componentSet": {
+      "nav": "nav/BasicNav",
+      "header": "header/SwissHeader",
+      "article": "article/SwissArticle",
+      "footer": "footer/BasicFooter"
+    },
+    "fontFamily": "\"Helvetica Neue\", Helvetica, Arial, sans-serif",
+    "heading": {
+      "fontWeight": 700,
+      "letterSpacing": "-0.01em"
+    },
+    "layout": {
+      "fluid": true
+    },
+    "colors": {
+      "text": "#000",
+      "background": "#fff",
+      "primary": "#05a",
+      "secondary": "#444",
+      "highlight": "#f30",
+      "border": "#ccc",
+      "muted": "#eee"
+    }
+  },
+  "content": [
+    {
+      "component": "nav",
+      "links": [
+        {
+          "href": "https://github.com/bueroalerta/connected-react-router",
+          "text": "GitHub"
+        },
+        {
+          "href": "https://npmjs.com/package/connected-react-router",
+          "text": "npm"
+        }
+      ]
+    },
+    {
+      "component": "header",
+      "heading": "connected-react-router",
+      "subhead": "A Redux binding for React Router v4",
+      "children": [
+        {
+          "component": "ui/TweetButton",
+          "text": "connected-react-router: A Redux binding for React Router v4",
+          "url": ""
+        },
+        {
+          "component": "ui/GithubButton",
+          "user": "bueroalerta",
+          "repo": "connected-react-router"
+        }
+      ],
+      "text": "v4.2.3"
+    },
+    {
+      "component": "article",
+      "metadata": {
+        "source": "github.readme"
+      },
+      "html": "<h1>Connected React Router <a href=\"https://travis-ci.org/supasate/connected-react-router\"><img src=\"https://travis-ci.org/supasate/connected-react-router.svg?branch=master\"></a></h1>\n\n<h2>Main features</h2>\n<p>:sparkles: Synchronize router state with redux store with uni-directional flow (history -&gt; store -&gt; router -&gt; components).</p>\n<p>:gift: Support <a href=\"https://github.com/ReactTraining/react-router/tree/v4\">React Router v4</a>.</p>\n<p>:sunny: Support functional component hot reloading while preserving state (with <a href=\"https://github.com/gaearon/react-hot-loader/tree/next\">react-hot-reload v3</a>).</p>\n<p>:tada: Dispatching history methods (<code>push</code>, <code>replace</code>, <code>go</code>, <code>goBack</code>, <code>goForward</code>) work for both <a href=\"https://github.com/gaearon/redux-thunk\">redux-thunk</a> and <a href=\"https://github.com/yelouafi/redux-saga\">redux-saga</a>.</p>\n<p>:snowman: Nested children can access routing state such as current location directly with <code>react-redux</code>&apos;s <code>connect</code>.</p>\n<p>:clock9: Support time traveling in Redux DevTools.</p>\n<p>:gem: Support <a href=\"https://facebook.github.io/immutable-js/\">Immutable.js</a></p>\n<p>:muscle: Support TypeScript</p>\n<h2>Installation</h2>\n<p>Using <a href=\"https://www.npmjs.com/\">npm</a>:</p>\n<pre>$ npm <span class=\"hljs-keyword\">install</span> <span class=\"hljs-comment\">--save connected-react-router</span></pre><p>Or <a href=\"https://yarnpkg.com/\">yarn</a>:</p>\n<pre>$ yarn <span class=\"hljs-keyword\">add</span><span class=\"bash\"> connected-react-router</span></pre><h2>Usage</h2>\n<h3>Step 1</h3>\n<ul>\n<li>Create a <code>history</code> object.</li>\n<li>Wrap the root reducer with <code>connectRouter</code> and supply the <code>history</code> object to get a new root reducer.</li>\n<li>Use <code>routerMiddleware(history)</code> if you want to dispatch history actions (ex. to change URL with <code>push(&apos;/path/to/somewhere&apos;)</code>).</li>\n</ul>\n<pre>...\nimport { createBrowserHistory } <span class=\"hljs-keyword\">from</span> <span class=\"hljs-string\">&apos;history&apos;</span>\n<span class=\"hljs-keyword\">import</span> { applyMiddleware, compose, createStore } <span class=\"hljs-keyword\">from</span> <span class=\"hljs-string\">&apos;redux&apos;</span>\n<span class=\"hljs-keyword\">import</span> { connectRouter, routerMiddleware } <span class=\"hljs-keyword\">from</span> <span class=\"hljs-string\">&apos;connected-react-router&apos;</span>\n...\nconst history = createBrowserHistory()\n\n<span class=\"hljs-keyword\">const</span> store = createStore(\n  connectRouter(history)(rootReducer), <span class=\"hljs-comment\">// new root reducer with router state</span>\n  initialState,\n  compose(\n    applyMiddleware(\n      routerMiddleware(history), <span class=\"hljs-comment\">// for dispatching history actions</span>\n      <span class=\"hljs-comment\">// ... other middlewares ...</span>\n    ),\n  ),\n)</pre><h3>Step 2</h3>\n<ul>\n<li>Wrap your react-router v4 routing with <code>ConnectedRouter</code> and pass <code>history</code> object as a prop.</li>\n<li>Place <code>ConnectedRouter</code> as children of <code>react-redux</code>&apos;s <code>Provider</code>.</li>\n</ul>\n<pre>...\nimport { Provider } <span class=\"hljs-keyword\">from</span> <span class=\"hljs-string\">&apos;react-redux&apos;</span>\n<span class=\"hljs-keyword\">import</span> { Route, Switch } <span class=\"hljs-keyword\">from</span> <span class=\"hljs-string\">&apos;react-router&apos;</span> <span class=\"hljs-comment\">// react-router v4</span>\n<span class=\"hljs-keyword\">import</span> { ConnectedRouter } <span class=\"hljs-keyword\">from</span> <span class=\"hljs-string\">&apos;connected-react-router&apos;</span>\n...\nReactDOM.render(\n  &lt;Provider store={store}&gt;\n    &lt;ConnectedRouter history={history}&gt; { /* place ConnectedRouter under Provider */ }\n      &lt;div&gt; { /* your usual react-router v4 routing */ }\n        &lt;Switch&gt;\n          &lt;Route exact path=&quot;/&quot; render={() =&gt; (&lt;div&gt;Match&lt;/div&gt;)} /&gt;\n          &lt;Route render={() =&gt; (&lt;div&gt;Miss&lt;/div&gt;)} /&gt;\n        &lt;/Switch&gt;\n      &lt;/div&gt;\n    &lt;/ConnectedRouter&gt;\n  &lt;/Provider&gt;,\n  document.getElementById(&apos;react-root&apos;)\n)</pre><p>Now, it&apos;s ready to work!</p>\n<h2>Examples</h2>\n<p>See <a href=\"https://github.com/supasate/connected-react-router/tree/master/examples\">examples</a> folder</p>\n<h2><a href=\"https://github.com/supasate/connected-react-router/tree/master/FAQ.md\">FAQ</a></h2>\n<ul>\n<li><a href=\"https://github.com/supasate/connected-react-router/tree/master/FAQ.md#how-to-navigate-with-redux-action\">How to navigate with Redux action</a></li>\n<li><a href=\"https://github.com/supasate/connected-react-router/tree/master/FAQ.md#how-to-get-current-browser-location-url\">How to get current browser location (URL)</a></li>\n<li><a href=\"https://github.com/supasate/connected-react-router/tree/master/FAQ.md#how-to-set-router-props-eg-basename-initialentries-etc\">How to set Router props e.g. basename, initialEntries, etc.</a></li>\n<li><a href=\"https://github.com/supasate/connected-react-router/tree/master/FAQ.md#how-to-hot-reload-functional-components\">How to hot reload functional components</a></li>\n<li><a href=\"https://github.com/supasate/connected-react-router/tree/master/FAQ.md#how-to-hot-reload-reducers\">How to hot reload reducers</a></li>\n<li><a href=\"https://github.com/supasate/connected-react-router/tree/master/FAQ.md#how-to-support-immutablejs\">How to support Immutable.js</a></li>\n</ul>\n<h2>Build</h2>\n<pre>npm run build</pre><p>Generated files will be in <code>lib</code> folder.</p>\n<h2>Contributors</h2>\n<p>See <a href=\"https://github.com/supasate/connected-react-router/graphs/contributors\">Contributors</a> and <a href=\"https://github.com/supasate/connected-react-router/blob/master/ACKNOWLEDGE.md\">Acknowledge</a>.</p>\n<h2>License</h2>\n<p><a href=\"https://github.com/supasate/connected-react-router/blob/master/LICENSE.md\">MIT License</a></p>\n"
+    },
+    {
+      "component": "footer",
+      "links": [
+        {
+          "href": "https://github.com/bueroalerta/connected-react-router",
+          "text": "GitHub"
+        },
+        {
+          "href": "https://github.com/bueroalerta",
+          "text": "bueroalerta"
+        }
+      ]
+    }
+  ]
+}
